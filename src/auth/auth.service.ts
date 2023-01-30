@@ -14,35 +14,50 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signin({ email, password }: SignInDto) {
-    try {
-      const user = await this.userRepository.find(email);
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (user && isMatch) {
-        return this.token(user.id, email);
-      } else throw new Error();
-    } catch (error) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+  async signin(credentials: SignInDto): Promise<{ access_token: string }> {
+    const { email, password } = credentials;
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
     }
+    const isPasswordMatching = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatching) {
+      throw new HttpException('Incorrect password', HttpStatus.UNAUTHORIZED);
+    }
+
+    return this.generateToken(user.id, email);
   }
 
-  async signup({ name, email, password }: SignUpDto) {
-    const hashPassword = await bcrypt.hash(password, 12);
+  async signup(data: SignUpDto): Promise<{ access_token: string }> {
+    const { name, email, password } = data;
+    const existingUser = await this.userRepository.findByEmail(email);
+    if (existingUser) {
+      throw new HttpException('Email already exists', HttpStatus.CONFLICT);
+    }
+
+    const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
     try {
       const user = await this.userRepository.create(name, email, hashPassword);
-      return this.token(user.id, email);
+      return this.generateToken(user.id, email);
     } catch (error) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        'Error during user creation',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async token(id: string, email: string): Promise<{ access_token: string }> {
+  private async generateToken(
+    id: string,
+    email: string,
+  ): Promise<{ access_token: string }> {
     const payload = { sub: id, email };
     const secret = this.configService.get('JWT_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       expiresIn: '15m',
       secret,
     });
+
     return { access_token };
   }
 }
