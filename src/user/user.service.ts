@@ -19,7 +19,7 @@ export class UserService {
   }
 
   private async findById(id: string) {
-    if (!(await this.userRepository.findById(id)))
+    if (!(await this.userRepository.findOneById(id)))
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
 }

@@ -16,7 +16,7 @@ export class AuthService {
 
   async signin(credentials: SignInDto): Promise<{ access_token: string }> {
     const { email, password } = credentials;
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findOneByEmail(email);
     if (!user) {
       throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
     }
@@ -29,7 +29,7 @@ export class AuthService {
 
   async signup(data: SignUpDto): Promise<{ access_token: string }> {
     const { name, email, password } = data;
-    const existingUser = await this.userRepository.findByEmail(email);
+    const existingUser = await this.userRepository.findOneByEmail(email);
     if (existingUser) {
       throw new HttpException('Email already exists', HttpStatus.CONFLICT);
     }

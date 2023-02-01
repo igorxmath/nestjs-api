@@ -22,11 +22,11 @@ export class PrismaUserRepository implements UserRepository {
     return await this.prisma.user.delete({ where: { id } });
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findOneByEmail(email: string): Promise<User> {
     return await this.prisma.user.findUnique({ where: { email } });
   }
 
-  async findById(id: string): Promise<User> {
+  async findOneById(id: string): Promise<User> {
     return await this.prisma.user.findUnique({ where: { id } });
   }
 }
