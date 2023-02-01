@@ -24,8 +24,7 @@ export class AuthService {
     if (!isPasswordMatching) {
       throw new HttpException('Incorrect password', HttpStatus.UNAUTHORIZED);
     }
-
-    return this.generateToken(user.id, email);
+    return this.generateToken(user.id, user.email, user.role);
   }
 
   async signup(data: SignUpDto): Promise<{ access_token: string }> {
@@ -38,7 +37,7 @@ export class AuthService {
     const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
     try {
       const user = await this.userRepository.create(name, email, hashPassword);
-      return this.generateToken(user.id, email);
+      return this.generateToken(user.id, user.email, user.role);
     } catch (error) {
       throw new HttpException(
         'Error during user creation',
@@ -50,11 +49,12 @@ export class AuthService {
   private async generateToken(
     id: string,
     email: string,
+    role: 'ADMIN' | 'USER',
   ): Promise<{ access_token: string }> {
-    const payload = { sub: id, email };
+    const payload = { sub: id, email, role };
     const secret = this.configService.get('JWT_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
-      expiresIn: '15m',
+      expiresIn: '1d',
       secret,
     });
 
