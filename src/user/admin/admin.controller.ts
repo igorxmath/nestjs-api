@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, ParseUUIDPipe } from '@nestjs/common';
 import {
   Delete,
   Patch,
@@ -14,20 +14,20 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Roles('ADMIN')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Controller('admin')
+@Controller('user/admin')
 export class AdminController {
   constructor(private userService: UserService) {}
 
   @Patch(':id')
   async updateUser(
-    @Param() { id }: { id: string },
+    @Param('id', ParseUUIDPipe) { id }: { id: string },
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  async deleteUser(@Param() { id }: { id: string }) {
+  async deleteUser(@Param('id', ParseUUIDPipe) { id }: { id: string }) {
     return await this.userService.delete(id);
   }
 }
