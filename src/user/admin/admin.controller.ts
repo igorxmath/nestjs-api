@@ -20,14 +20,14 @@ export class AdminController {
 
   @Patch(':id')
   async updateUser(
-    @Param('id', ParseUUIDPipe) { id }: { id: string },
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id', ParseUUIDPipe) { id }: { id: string }) {
+  async deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     return await this.userService.delete(id);
   }
 }

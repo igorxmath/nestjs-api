@@ -7,19 +7,23 @@ export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    await this.findById(id);
-    await this.userRepository.update(id, updateUserDto);
+    const user = await this.findById(id);
+    await this.userRepository.update(user.id, updateUserDto);
     return updateUserDto;
   }
 
   async delete(id: string) {
-    await this.findById(id);
-    await this.userRepository.delete(id);
-    return { message: `User deleted ${id}` };
+    const user = await this.findById(id);
+    if (user.role == 'ADMIN') {
+      throw new HttpException('Cannot delete admin', HttpStatus.BAD_REQUEST);
+    }
+    await this.userRepository.delete(user.id);
+    return { message: `User deleted ${user.id}` };
   }
 
   private async findById(id: string) {
-    if (!(await this.userRepository.findOneById(id)))
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    const user = await this.userRepository.findOneById(id);
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    return user;
   }
 }
