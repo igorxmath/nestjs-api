@@ -1,14 +1,14 @@
 import { Controller } from '@nestjs/common';
 import { Get, Delete, Patch, UseGuards, Body } from '@nestjs/common/decorators';
-import { JwtAuthGuard } from 'src/user/guard/jwt-auth.guard';
 import { GetUser } from './decorators/get-user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
+import { AccessTokenGuard } from './guard/AccessTokenGuard.guard';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AccessTokenGuard)
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
   @Get()
   getUser(@GetUser() user: { id: string }) {
     return user;

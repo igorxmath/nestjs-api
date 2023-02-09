@@ -17,6 +17,7 @@ model User {
   password String
   createdAt DateTime @default(now())
   role Role @default(USER)
+  refreshToken String?
 }
 
 enum Role {

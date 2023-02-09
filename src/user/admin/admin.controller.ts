@@ -8,15 +8,15 @@ import {
 } from '@nestjs/common/decorators';
 import { Roles } from '../decorators/roles.decorator';
 import { RolesGuard } from '../guard/roles.guard';
-import { JwtAuthGuard } from '../guard/jwt-auth.guard';
+import { AccessTokenGuard } from '../guard/AccessTokenGuard.guard';
 import { UserService } from '../user.service';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Roles('ADMIN')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(AccessTokenGuard, RolesGuard)
 @Controller('user/admin')
 export class AdminController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Patch(':id')
   async updateUser(
