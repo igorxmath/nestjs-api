@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserRepository } from 'src/repositories/user-repository';
+import { UserRepository } from '../repositories/user-repository';
 import { SignInDto } from './dto/signin.dto';
 import { SignUpDto } from './dto/signup.dto';
 import { JwtService } from '@nestjs/jwt';
