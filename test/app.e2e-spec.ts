@@ -29,7 +29,7 @@ describe('Appmodule (e2e)', () => {
 
   describe('Authenticate', () => {
     const name = 'teste';
-    const data = { email: 'teste92@igor.com', password: 'QXD*ver3jwy3ndr*pwg' };
+    const data = { email: 'teste@igor.com', password: 'QXD*ver3jwy3ndr*pwg' };
 
     describe('SignUp', () => {
       it('/auth/signup (POST)', () => {
