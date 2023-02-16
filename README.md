@@ -78,7 +78,9 @@ Returns a specific user by ID.
 
 ### POST /users/:id/budget
 Sets a budget for a specific user based on a list of product IDs.
+
 **Request**
+
 Expects a JSON body with an array of product IDs:
 ```json
 {
