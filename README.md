@@ -46,7 +46,7 @@ The following endpoints are available:
 Returns a list of all users.
 
 
-#### Response
+**Response**
 ```json
 [
     {
@@ -67,7 +67,7 @@ Returns a list of all users.
 
 Returns a specific user by ID.
 
-#### Response
+**Response**
 ```json
 {
   "id": 1,
@@ -78,7 +78,7 @@ Returns a specific user by ID.
 
 ### POST /users/:id/budget
 Sets a budget for a specific user based on a list of product IDs.
-#### Request
+**Request**
 Expects a JSON body with an array of product IDs:
 ```json
 {
@@ -86,7 +86,7 @@ Expects a JSON body with an array of product IDs:
 }
 ```
 
-#### Response
+**Response**
 ```json
 {
   "total_price": 220.5
@@ -96,7 +96,7 @@ Expects a JSON body with an array of product IDs:
 ### GET /products
 Returns a list of all products.
 
-#### Response
+**Response**
 ```json
 [
     {
@@ -116,7 +116,7 @@ Returns a list of all products.
 ### GET /products/:id
 Returns a specific product by ID.
 
-#### Response
+**Response**
 ```json
 {
   "id": 1,
