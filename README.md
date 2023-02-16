@@ -81,7 +81,7 @@ Sets a budget for a specific user based on a list of product IDs.
 
 **Request**
 
-Expects a JSON body with an array of product IDs:
+> Expects a JSON body with an array of product IDs:
 ```json
 {
   "products_ids": [1, 2, 3]
