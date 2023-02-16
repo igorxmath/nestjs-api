@@ -1,73 +1,137 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# BudgetBuddy
+> BudgetBuddy is a web application built using Nest.js, a powerful Node.js framework for building scalable and efficient server-side applications. The app provides a REST API that allows users to manage a list of products and track their budgets.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
+- Set budgets for users based on the prices of selected products
+- Handle common HTTP errors using exception filters
+- Validate incoming data using DTOs (Data Transfer Objects)
+- Unit test services and controllers using Jest and Nest.js testing utilities
+- End-to-end test the entire app using Supertest and Jest
 
-## Description
+## Technologies
+BudgetBuddy was built using the following technologies:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Nest.js - A progressive Node.js framework for building efficient, scalable, and robust server-side applications
+- TypeScript - A typed superset of JavaScript that compiles to plain JavaScript
+- Jest - A popular testing framework for JavaScript projects, with built-in support for mocking, assertions, and code coverage analysis
+- Supertest - A high-level HTTP testing library for Node.js applications
 
-## Installation
+## Installing
+1. Clone the repository and navigate to the project directory.
 
-```bash
-$ npm install
+2. Install NPM packages
+    ```bash
+    npm install
+    ```
+
+3. Next, create a .env file in the root of the project and add the following:
+    ```env
+    API_URL=https://example.com/api
+    ```
+    Replace https://example.com/api with the URL of the external API.
+
+4. Run the development server
+    ```bash
+    npm run start:dev
+    ```
+    - Use the API at http://localhost:3000
+    - Use a tool like [Postman](https://www.postman.com/) to test the API endpoints.
+
+## API Documentation
+The following endpoints are available:
+
+### GET /users
+
+Returns a list of all users.
+
+
+#### Response
+```json
+[
+    {
+        "id": 1,
+        "name": "Alice",
+        "tax": 10
+    },
+    {
+        "id": 2,
+        "name": "Bob",
+        "tax": 15
+    },
+    ...
+]
 ```
 
-## Running the app
+### GET /users/:id
 
-```bash
-# development
-$ npm run start
+Returns a specific user by ID.
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+#### Response
+```json
+{
+  "id": 1,
+  "name": "Alice",
+  "tax": 10
+}
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+### POST /users/:id/budget
+Sets a budget for a specific user based on a list of product IDs.
+#### Request
+Expects a JSON body with an array of product IDs:
+```json
+{
+  "products_ids": [1, 2, 3]
+}
 ```
 
-## Support
+#### Response
+```json
+{
+  "total_price": 220.5
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### GET /products
+Returns a list of all products.
 
-## Stay in touch
+#### Response
+```json
+[
+    {
+        "id": 1,
+        "name": "Product 1",
+        "price": 100
+    },
+    {
+        "id": 2,
+        "name": "Product 2",
+        "price": 50
+    },
+    ...
+]
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### GET /products/:id
+Returns a specific product by ID.
 
-## License
+#### Response
+```json
+{
+  "id": 1,
+  "name": "Product 1",
+  "price": 100
+}
+```
 
-Nest is [MIT licensed](LICENSE).
+## Running Tests
+You can run the unit tests with:
+```bash
+npm run test
+```
+
+You can run the e2e tests with:
+```bash
+npm run test:e2e
+```
